@@ -5,7 +5,7 @@ from numpy import linalg as LA
 
 class RBF:
 
-    def __init__(self, initial_data, transformed_data, amount_of_centers, epsilon, delta_t):
+    def __init__(self, initial_data, transformed_data, amount_of_centers, epsilon, delta_t, vector_field=True):
         """
 
         :type initial_data: object
@@ -28,7 +28,8 @@ class RBF:
         distance = distance_matrix(
             self.initial_data, self.centers)
         theta = np.exp(-(distance / epsilon)**2)
-        F = self.get_approximate_velocity(initial_data, transformed_data)
+        F = self.get_approximate_velocity(
+            initial_data, transformed_data) if vector_field else self.transformed_data
         C, residuals, rank, s = LA.lstsq(theta, F, 1000)
         self.C = C
 
